@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Bullet List Viewer</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50 p-6">
+  <div class="max-w-4xl mx-auto">
+    <h1 class="text-3xl font-bold mb-4">Categories</h1>
+    <select id="categorySelect" class="w-full p-2 rounded border border-gray-300 mb-6 text-xl font-semibold"></select>
+    <div id="listsContainer" class="space-y-6"></div>
+  </div>
+
+  <script>
+    const data = [
+      {
+        category: "List Category",
+        lists: [
+          {
+            title: "List title 1",
+            url: "https://www.youtube.com/watch?v=abcdefghijk",
+            bullets: [
+              { text: "Check this resource", url: "https://www.example.com", url_text: "here" },
+              { text: "Another bullet without link" }
+            ]
+          },
+          {
+            title: "List title 2",
+            url: "https://www.youtube.com/watch?v=1234567890a",
+            bullets: [
+              { text: "Interesting point", url: "https://www.google.com", url_text: "Google it" }
+            ]
+          }
+        ]
+      },
+      {
+        category: "Second Category",
+        lists: [
+          {
+            title: "List title A",
+            url: "https://www.youtube.com/watch?v=zxcvbnmlkjh",
+            bullets: [
+              { text: "Helpful link", url: "https://some.site", url_text: "Visit" }
+            ]
+          }
+        ]
+      }
+    ];
+
+    const categorySelect = document.getElementById("categorySelect");
+    const listsContainer = document.getElementById("listsContainer");
+
+    function getYouTubeThumbnail(url) {
+      const videoId = url.split("v=")[1]?.split("&")[0];
+      return videoId ? `https://img.youtube.com/vi/${videoId}/0.jpg` : "";
+    }
+
+    function renderCategories() {
+      categorySelect.innerHTML = "";
+      data.forEach((entry, index) => {
+        const option = document.createElement("option");
+        option.value = index;
+        option.textContent = entry.category;
+        categorySelect.appendChild(option);
+      });
+    }
+
+    function renderLists(categoryIndex) {
+      const { lists } = data[categoryIndex];
+      listsContainer.innerHTML = "";
+
+      lists.forEach((list, idx) => {
+        const listDiv = document.createElement("div");
+        listDiv.className = "bg-white shadow rounded-lg p-4";
+
+        const title = document.createElement("h2");
+        title.className = "text-2xl font-semibold cursor-pointer text-blue-700 hover:underline";
+        title.textContent = list.title;
+        title.dataset.idx = idx;
+
+        const bulletsDiv = document.createElement("div");
+        bulletsDiv.className = "mt-4 hidden space-y-2";
+
+        list.bullets.forEach(b => {
+          const bullet = document.createElement("div");
+          bullet.className = "flex items-start space-x-2";
+
+          const dot = document.createElement("div");
+          dot.className = "mt-1 w-2 h-2 bg-blue-500 rounded-full flex-shrink-0";
+
+          const content = document.createElement("div");
+          content.className = "text-gray-800";
+          content.innerHTML = b.url
+            ? `${b.text} <a href="${b.url}" target="_blank" class="text-blue-600 underline">${b.url_text || 'link'}</a>`
+            : b.text;
+
+          bullet.append(dot, content);
+          bulletsDiv.appendChild(bullet);
+        });
+
+        // Add thumbnail + YouTube link
+        const ytThumbUrl = getYouTubeThumbnail(list.url);
+        if (ytThumbUrl) {
+          const thumbLink = document.createElement("a");
+          thumbLink.href = list.url;
+          thumbLink.target = "_blank";
+          thumbLink.className = "block mt-4";
+
+          const img = document.createElement("img");
+          img.src = ytThumbUrl;
+          img.alt = "YouTube thumbnail";
+          img.className = "rounded shadow w-full max-w-md";
+
+          thumbLink.appendChild(img);
+          bulletsDiv.appendChild(thumbLink);
+        }
+
+        title.addEventListener("click", () => {
+          bulletsDiv.classList.toggle("hidden");
+        });
+
+        listDiv.appendChild(title);
+        listDiv.appendChild(bulletsDiv);
+        listsContainer.appendChild(listDiv);
+      });
+    }
+
+    categorySelect.addEventListener("change", e => {
+      renderLists(e.target.value);
+    });
+
+    // Init
+    renderCategories();
+    renderLists(0);
+  </script>
+</body>
+</html>
