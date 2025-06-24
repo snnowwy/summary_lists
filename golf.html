@@ -188,7 +188,18 @@
         }
 
         title.addEventListener("click", () => {
-          bulletsDiv.classList.toggle("hidden");
+          const currentlyVisible = !bulletsDiv.classList.contains("hidden");
+
+          // Collapse all other bullet sections
+          document.querySelectorAll("#listsContainer > div").forEach(div => {
+            const inner = div.querySelector("div.mt-4");
+            if (inner && inner !== bulletsDiv) {
+              inner.classList.add("hidden");
+            }
+          });
+
+          // Toggle the clicked one
+          bulletsDiv.classList.toggle("hidden", currentlyVisible ? true : false);
         });
 
         listDiv.appendChild(title);
