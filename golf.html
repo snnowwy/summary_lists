@@ -1,35 +1,45 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Bullet List Viewer</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Golf Summaries</title>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="bg-gray-50 p-6">
+
+<body class="bg-gray-50 p-4">
   <div class="max-w-4xl mx-auto">
-    <h1 class="text-3xl font-bold mb-4">Categories</h1>
-    <select id="categorySelect" class="w-full p-2 rounded border border-gray-300 mb-6 text-xl font-semibold"></select>
+    <select id="categorySelect" class="w-full p-3 rounded border border-gray-300 mb-6 text-lg font-semibold"></select>
     <div id="listsContainer" class="space-y-6"></div>
   </div>
 
   <script>
     const data = [
       {
-        category: "List Category",
+        category: "Chipping",
         lists: [
           {
-            title: "List title 1",
-            url: "https://www.youtube.com/watch?v=abcdefghijk",
+            title: "Bump and run - Golf sidekick",
+            url: "https://youtu.be/g9QRqZAGNxs",
             bullets: [
-              { text: "Check this resource", url: "https://www.example.com", url_text: "here" },
-              { text: "Another bullet without link" }
+              { text: "Hands high and stood up, hitting off the toe." },
+              { text: "Putting stroke. Hit easy and consistent. Change club not swing." },
+              { text: "Keep it low" },
+              { text: "Experiment with ball position in stance for fine grained distance control" },
             ]
           },
           {
-            title: "List title 2",
-            url: "https://www.youtube.com/watch?v=1234567890a",
+            title: "Toe Down Chipping with 6-8-10 irons - Rule of 12 SIMPLIFIED",
+            subtitle: "Golf sidekick",
+            url: "https://youtu.be/ZGe-WSTYlAA",
             bullets: [
-              { text: "Interesting point", url: "https://www.google.com", url_text: "Google it" }
+              { text: "6, 8 & 10 (PW) irons" },
+              { text: "Putter swing, toe down chip" },
+              { text: "PW: 50% carry 50% roll" },
+              { text: "8 iron: ⅓ carry ⅔ roll" },
+              { text: "6 iron: ¼ carry ¾ roll" },
+              { text: "Uphill surface, 8 iron becomes 6, downhill, PW. Still calculate using 8 iron ratio: 50-50" },
             ]
           }
         ]
@@ -57,7 +67,6 @@
     }
 
     function renderCategories() {
-      categorySelect.innerHTML = "";
       data.forEach((entry, index) => {
         const option = document.createElement("option");
         option.value = index;
@@ -75,31 +84,35 @@
         listDiv.className = "bg-white shadow rounded-lg p-4";
 
         const title = document.createElement("h2");
-        title.className = "text-2xl font-semibold cursor-pointer text-blue-700 hover:underline";
+        title.className = "text-xl font-semibold cursor-pointer text-blue-700 hover:underline";
         title.textContent = list.title;
         title.dataset.idx = idx;
 
         const bulletsDiv = document.createElement("div");
-        bulletsDiv.className = "mt-4 hidden space-y-2";
+        bulletsDiv.className = "mt-4 hidden space-y-3";
 
         list.bullets.forEach(b => {
           const bullet = document.createElement("div");
-          bullet.className = "flex items-start space-x-2";
+          bullet.className = "text-gray-800 pl-4 relative";
 
-          const dot = document.createElement("div");
-          dot.className = "mt-1 w-2 h-2 bg-blue-500 rounded-full flex-shrink-0";
+          const dot = document.createElement("span");
+          dot.className = "absolute left-0 top-1.5 w-2 h-2 bg-blue-500 rounded-full";
+          bullet.appendChild(dot);
 
-          const content = document.createElement("div");
-          content.className = "text-gray-800";
-          content.innerHTML = b.url
-            ? `${b.text} <a href="${b.url}" target="_blank" class="text-blue-600 underline">${b.url_text || 'link'}</a>`
-            : b.text;
+          const content = document.createElement("span");
+          content.className = "ml-4";
 
-          bullet.append(dot, content);
+          if (b.url) {
+            content.innerHTML = `${b.text} (<a href="${b.url}" target="_blank" class="text-blue-600 underline">${b.url_text || 'link'}</a>)`;
+          } else {
+            content.textContent = b.text;
+          }
+
+          bullet.appendChild(content);
           bulletsDiv.appendChild(bullet);
         });
 
-        // Add thumbnail + YouTube link
+        // YouTube thumbnail
         const ytThumbUrl = getYouTubeThumbnail(list.url);
         if (ytThumbUrl) {
           const thumbLink = document.createElement("a");
@@ -130,9 +143,9 @@
       renderLists(e.target.value);
     });
 
-    // Init
     renderCategories();
     renderLists(0);
   </script>
 </body>
+
 </html>
