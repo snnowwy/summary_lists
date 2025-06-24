@@ -4,13 +4,38 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Golf Summaries</title>
+  <title>Golf Summary Lists</title>
   <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Tailwind Configuration for Custom Colors */
+    tailwind.config= {
+      theme: {
+        extend: {
+          colors: {
+            neon: '#FFA500', // Neon Orange
+              darkbg: '#0D0D0D', // Deep Dark Background
+          }
+
+          ,
+        }
+
+        ,
+      }
+
+      ,
+    }
+
+    ;
+  </style>
 </head>
 
-<body class="bg-gray-50 p-4">
+<body class="bg-darkbg text-neon min-h-screen p-4">
   <div class="max-w-4xl mx-auto">
-    <select id="categorySelect" class="w-full p-3 rounded border border-gray-300 mb-6 text-lg font-semibold"></select>
+    <!-- Category Selector -->
+    <select id="categorySelect"
+      class="w-full p-3 rounded border border-neon bg-darkbg text-neon text-xl font-bold mb-6 shadow-lg"></select>
+
+    <!-- Lists Container -->
     <div id="listsContainer" class="space-y-6"></div>
   </div>
 
@@ -45,17 +70,33 @@
         ]
       },
       {
-        category: "Second Category",
+        category: "Chipping",
         lists: [
           {
-            title: "List title A",
-            url: "https://www.youtube.com/watch?v=zxcvbnmlkjh",
+            title: "Bump and run - Golf sidekick",
+            url: "https://youtu.be/g9QRqZAGNxs",
             bullets: [
-              { text: "Helpful link", url: "https://some.site", url_text: "Visit" }
+              { text: "Hands high and stood up, hitting off the toe." },
+              { text: "Putting stroke. Hit easy and consistent. Change club not swing." },
+              { text: "Keep it low" },
+              { text: "Experiment with ball position in stance for fine grained distance control" },
+            ]
+          },
+          {
+            title: "Toe Down Chipping with 6-8-10 irons - Rule of 12 SIMPLIFIED",
+            subtitle: "Golf sidekick",
+            url: "https://youtu.be/ZGe-WSTYlAA",
+            bullets: [
+              { text: "6, 8 & 10 (PW) irons" },
+              { text: "Putter swing, toe down chip" },
+              { text: "PW: 50% carry 50% roll" },
+              { text: "8 iron: ⅓ carry ⅔ roll" },
+              { text: "6 iron: ¼ carry ¾ roll" },
+              { text: "Uphill surface, 8 iron becomes 6, downhill, PW. Still calculate using 8 iron ratio: 50-50" },
             ]
           }
         ]
-      }
+      },
     ];
 
     const categorySelect = document.getElementById("categorySelect");
@@ -67,6 +108,7 @@
     }
 
     function renderCategories() {
+      categorySelect.innerHTML = "";
       data.forEach((entry, index) => {
         const option = document.createElement("option");
         option.value = index;
@@ -81,11 +123,11 @@
 
       lists.forEach((list, idx) => {
         const listDiv = document.createElement("div");
-        listDiv.className = "bg-white shadow rounded-lg p-4";
+        listDiv.className = "bg-darkbg border border-neon rounded-lg p-4 shadow-lg";
 
         const title = document.createElement("h2");
-        title.className = "text-xl font-semibold cursor-pointer text-blue-700 hover:underline";
-        title.textContent = list.title;
+        title.className = "text-2xl font-semibold cursor-pointer flex items-center justify-between";
+        title.innerHTML = `<span>${list.title}</span><span class="ml-2 mr-4 text-neon">▼</span>`;
         title.dataset.idx = idx;
 
         const bulletsDiv = document.createElement("div");
@@ -93,17 +135,17 @@
 
         list.bullets.forEach(b => {
           const bullet = document.createElement("div");
-          bullet.className = "text-gray-800 pl-4 relative";
+          bullet.className = "text-neon pl-4 relative";
 
           const dot = document.createElement("span");
-          dot.className = "absolute left-0 top-1.5 w-2 h-2 bg-blue-500 rounded-full";
+          dot.className = "absolute left-0 top-1.5 w-2 h-2 bg-neon rounded-full";
           bullet.appendChild(dot);
 
           const content = document.createElement("span");
           content.className = "ml-4";
 
           if (b.url) {
-            content.innerHTML = `${b.text} (<a href="${b.url}" target="_blank" class="text-blue-600 underline">${b.url_text || 'link'}</a>)`;
+            content.innerHTML = `${b.text} (<a href="${b.url}" target="_blank" class="underline hover:text-orange-300">${b.url_text || 'link'}</a>)`;
           } else {
             content.textContent = b.text;
           }
@@ -123,7 +165,7 @@
           const img = document.createElement("img");
           img.src = ytThumbUrl;
           img.alt = "YouTube thumbnail";
-          img.className = "rounded shadow w-full max-w-md";
+          img.className = "rounded shadow w-full max-w-md border border-neon";
 
           thumbLink.appendChild(img);
           bulletsDiv.appendChild(thumbLink);
@@ -143,6 +185,7 @@
       renderLists(e.target.value);
     });
 
+    // Initialize
     renderCategories();
     renderLists(0);
   </script>
