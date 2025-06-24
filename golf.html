@@ -61,10 +61,10 @@
         ]
       },
       {
-        category: "Chipping",
+        category: "Chipping 2",
         lists: [
           {
-            title: "Bump and run - Golf sidekick",
+            title: "Bump and run - Golf sidekick - 2",
             url: "https://youtu.be/g9QRqZAGNxs",
             bullets: [
               { text: "Hands high and stood up, hitting off the toe." },
@@ -74,7 +74,7 @@
             ]
           },
           {
-            title: "Toe Down Chipping with 6-8-10 irons - Rule of 12 SIMPLIFIED",
+            title: "Toe Down Chipping with 6-8-10 irons - Rule of 12 SIMPLIFIED - 2",
             subtitle: "Golf sidekick",
             url: "https://youtu.be/ZGe-WSTYlAA",
             bullets: [
@@ -116,9 +116,22 @@
         const listDiv = document.createElement("div");
         listDiv.className = "bg-darkbg border border-neon rounded-lg p-4 shadow-lg";
 
-        const title = document.createElement("h2");
-        title.className = "text-2xl font-semibold cursor-pointer flex items-center justify-between";
-        title.innerHTML = `<span>${list.title}</span><span class="ml-2 mr-4 text-neon">▼</span>`;
+        const title = document.createElement("div");
+        title.className = "cursor-pointer";
+
+        const titleRow = document.createElement("div");
+        titleRow.className = "text-2xl font-semibold flex items-center justify-between text-neon";
+        titleRow.innerHTML = `<span>${list.title}</span>`;
+
+        const subtitle = document.createElement("div");
+        subtitle.className = "text-sm text-neon/80 mt-1";
+        subtitle.textContent = list.subtitle || "";
+
+        title.appendChild(titleRow);
+        if (list.subtitle) {
+          title.appendChild(subtitle);
+        }
+
         title.dataset.idx = idx;
 
         const bulletsDiv = document.createElement("div");
