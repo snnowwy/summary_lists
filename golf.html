@@ -13,7 +13,8 @@
           colors: {
             neon: '#FFA500',
             darkbg: '#0D0D0D',
-            softbg: '#1A1A1A'  // <– slightly lighter than darkbg
+            softbg: '#1A1A1A',
+            bulletbg: '#222222'
           },
           boxShadow: {
             neon: '0 0 8px #FFA50088'  // <– muted neon glow
@@ -307,18 +308,18 @@
         }
 
         const bulletsDiv = document.createElement("div");
-        bulletsDiv.className = "mt-4 hidden space-y-3";
+        bulletsDiv.className = "mt-4 hidden space-y-3 bg-bulletbg rounded p-4";
 
         list.bullets.forEach(b => {
           const bullet = document.createElement("div");
-          bullet.className = "text-neon pl-4 relative";
+          bullet.className = "text-neon flex items-start space-x-3";
 
-          const dot = document.createElement("span");
-          dot.className = "absolute left-0 top-1.5 w-2 h-2 bg-neon rounded-full";
+          const dot = document.createElement("div");
+          dot.className = "mt-1 w-2 h-2 bg-neon rounded-full flex-shrink-0";
           bullet.appendChild(dot);
 
-          const content = document.createElement("span");
-          content.className = "ml-4";
+          const content = document.createElement("div");
+          content.className = "text-left whitespace-pre-wrap break-words";
 
           if (b.url) {
             content.innerHTML = `${b.text} (<a href="${b.url}" target="_blank" class="underline hover:text-orange-300">${b.url_text || 'link'}</a>)`;
