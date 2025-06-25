@@ -312,10 +312,10 @@
 
         list.bullets.forEach(b => {
           const bullet = document.createElement("div");
-          bullet.className = "text-neon flex items-start space-x-3";
+          bullet.className = "text-neon relative pl-4";
 
           const dot = document.createElement("div");
-          dot.className = "mt-1 w-2 h-2 bg-neon rounded-full flex-shrink-0";
+          dot.className = "absolute top-2 w-2 h-2 left-0 bg-neon rounded-full";
           bullet.appendChild(dot);
 
           const content = document.createElement("div");
@@ -327,6 +327,7 @@
             content.textContent = b.text;
           }
 
+          bullet.appendChild(dot);
           bullet.appendChild(content);
           bulletsDiv.appendChild(bullet);
         });
