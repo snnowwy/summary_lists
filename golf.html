@@ -30,7 +30,7 @@
     <!-- Category Selector -->
     <div class="relative mb-6">
       <select id="categorySelect"
-        class="appearance-none w-full p-3 rounded border border-neon bg-darkbg text-neon text-2xl font-bold shadow-lg pr-10">
+        class="appearance-none w-full max-w-full p-3 rounded border border-neon bg-neon text-darkbg text-2xl font-bold shadow-lg pr-10 truncate">
       </select>
       <div class="pointer-events-none absolute inset-y-0 right-3 flex items-center">
         <svg class="w-5 h-5 text-neon font-bold" fill="none" stroke="currentColor" stroke-width="3" viewBox="0 0 24 24"
@@ -273,6 +273,7 @@
         const option = document.createElement("option");
         option.value = index;
         option.textContent = entry.category;
+        option.className = "text-sm whitespace-normal";
         categorySelect.appendChild(option);
       });
     }
